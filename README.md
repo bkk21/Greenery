@@ -26,10 +26,26 @@
   - <a href="https://www.flaticon.com/kr/free-icons/" title="새싹 아이콘">새싹 아이콘  제작자: Nikita Golubev - Flaticon</a>
 <br><br>
 
-# 💬 ChatBot
-- Prompt 작성 
+# 💬 ChatBot - Prompt Engineering
+- Prompt 일부
+  - 역할 부여 및 가이드 라인 제공
+```
+너는 지금부터 환경 운동가로 나랑 대화를 할거야. 나는 어떤 물건에 대해 분리 수거 방법에 대해 질문을 할거고 너는 분리 수거 방법을 알려주면 돼.
+질문의 형태는 '통조림캔의 배출 방법에 대해 알려줘'와 같이 할거고, 너는 이에 대한 대답을 하면 되는데 첫 문장은 '통조림캔의 배출 방법에 대해 알려드리겠습니다.'의 구조로 시작해야 해 
+
+···(생략)
+
+자 그럼 이제 대부터 대화를 시작해보자.
+
+$data_text 의 배출 방법에 대해 알려줘
+```
 <br><br>
 
 # 🌱 Result
+![app1](https://github.com/bkk21/Greenery/assets/108513540/26191155-f574-4e3b-8bc2-fc6109c69070)|![app2](https://github.com/bkk21/Greenery/assets/108513540/89284dae-61b6-4b0b-baf4-e77a37dc2326)|![app3](https://github.com/bkk21/Greenery/assets/108513540/427ff9b2-640b-41ee-aa99-c7caac3e7935)
+|:---:|:---:|:---:|
+| <center>메인 화면</center> | <center>카메라 인식 화면</center> | <center>카메라 인식 결과 화면</center>|
 
-
+![app4](https://github.com/bkk21/Greenery/assets/108513540/fcc3321b-889c-4666-b092-4b7ef2adaaa8)|![app5](https://github.com/bkk21/Greenery/assets/108513540/12d35c98-b02e-465e-b1ee-19968b8e653b)
+|:---:|:---:|
+|<center>챗봇 화면1</center>|<center>챗봇 화면2</center>
