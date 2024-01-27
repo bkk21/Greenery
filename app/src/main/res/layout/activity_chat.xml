@@ -30,6 +30,7 @@
                 android:layout_height="match_parent"
                 android:text="챗봇"
                 android:gravity="center"
+                android:textColor="#000"
                 android:id="@+id/toolbar_title"
                 android:textStyle="bold"
                 android:textSize="20sp" />

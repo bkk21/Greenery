@@ -197,8 +197,8 @@ class Camera : AppCompatActivity() {
         val text1 = findViewById<TextView>(R.id.text1)
         val text2 = findViewById<TextView>(R.id.text2)
 
-        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
-        progressBar.visibility = View.VISIBLE
+        val loading = findViewById<LinearLayout>(R.id.loading_view)
+        loading.visibility = View.VISIBLE
 
 
         val file = File(file_text)

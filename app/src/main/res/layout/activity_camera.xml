@@ -29,6 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="카메라 인식"
+                android:textColor="#000"
                 android:gravity="center"
                 android:id="@+id/toolbar_title"
                 android:textStyle="bold"
@@ -49,88 +50,147 @@
             android:layout_weight="8"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:background="@drawable/green_box"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center|top"
-                android:layout_margin="20dp"
-                android:weightSum="10"
-                android:orientation="vertical">
-
+                android:layout_height="match_parent">
                 <LinearLayout
+                    android:background="@drawable/green_box"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="2"
-                    android:gravity="center|top">
-                    <TextView
-                        android:id="@+id/Textmain"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="사진을 찍어주세요 📸"
-                        android:textStyle="bold"
-                        android:textSize="28sp"
-                        android:textColor="#000"
-                        android:gravity="center"/>
-                </LinearLayout>
-
-                <RelativeLayout
-                    android:id="@+id/earth"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="5"
-                    android:paddingStart="60dp"
-                    android:paddingEnd="50dp"
-                    android:paddingTop="0dp"
-                    android:paddingBottom="30dp"
-                    android:gravity="center">
-                    <ImageView
-                        android:id="@+id/imageView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="fitCenter"
-                        android:adjustViewBounds="true"
-                        android:src="@drawable/earth" />
-                    <ProgressBar
-                        android:id="@+id/progressBar"
-                        style="?android:attr/progressBarStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:visibility="invisible"/>
-                </RelativeLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center|top">
-                    <TextView
-                        android:id="@+id/text1"
+                    android:gravity="center|top"
+                    android:layout_margin="20dp"
+                    android:weightSum="10"
+                    android:orientation="vertical">
+
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="하단 카메라 버튼 또는 지구 클릭하기"
-                        android:textStyle="bold"
-                        android:textSize="20sp"
-                        android:textColor="#000"
-                        android:gravity="center"/>
+                        android:layout_height="0dp"
+                        android:layout_weight="2"
+                        android:gravity="center|top">
+                        <TextView
+                            android:id="@+id/Textmain"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="사진을 찍어주세요 📸"
+                            android:textStyle="bold"
+                            android:textSize="28sp"
+                            android:textColor="#000"
+                            android:gravity="center"/>
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/earth"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="4"
+                        android:paddingStart="60dp"
+                        android:paddingEnd="50dp"
+                        android:paddingBottom="30dp"
+                        android:gravity="center">
+                        <ImageView
+                            android:id="@+id/imageView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="fitCenter"
+                            android:adjustViewBounds="true"
+                            android:layout_marginTop="30dp"
+                            android:src="@drawable/earth" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="2"
+                        android:gravity="center|top">
+                        <TextView
+                            android:id="@+id/text2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="사진을 찍을 때는 물체가 하나만\n나오도록 찍어주세요!"
+                            android:textSize="20sp"
+                            android:textColor="#000"
+                            android:gravity="center"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="2"
+                        android:paddingBottom="20dp"
+                        android:gravity="center|top">
+                        <TextView
+                            android:id="@+id/text1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="하단 카메라 버튼 또는 지구 클릭하기"
+                            android:textStyle="bold"
+                            android:textSize="20sp"
+                            android:textColor="#000"
+                            android:gravity="center"/>
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/loading_view"
+                    android:background="@drawable/green_box"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="2"
-                    android:gravity="center|top">
-                    <TextView
-                        android:id="@+id/text2"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center|top"
+                    android:layout_margin="20dp"
+                    android:weightSum="4"
+                    android:orientation="vertical"
+                    android:visibility="invisible">
+
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="사진을 찍을 때는 물체가 하나만\n나오도록 찍어주세요!"
-                        android:textSize="20sp"
-                        android:textColor="#000"
-                        android:gravity="center"/>
+                        android:layout_height="0dp"
+                        android:layout_weight="1.5"
+                        android:padding="50dp"
+                        android:layout_marginTop="50dp">
+                        <ProgressBar
+                            android:id="@+id/progressBar"
+                            style="?android:attr/progressBarStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center|top">
+                        <TextView
+                            android:id="@+id/loading"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="Loding..."
+                            android:textStyle="bold"
+                            android:textSize="28sp"
+                            android:textColor="#000"
+                            android:gravity="center"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1.5"
+                        android:gravity="center|top">
+                        <TextView
+                            android:id="@+id/loading_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="환경을 사랑하는 Grenery입니다 :)"
+                            android:textSize="20sp"
+                            android:textColor="#000"
+                            android:gravity="center|top"/>
+
+                    </LinearLayout>
+
                 </LinearLayout>
-            </LinearLayout>
+            </RelativeLayout>
 
         </LinearLayout>
 
