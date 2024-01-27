@@ -57,7 +57,7 @@ class Camera_Result : AppCompatActivity() {
         if(data != "") {
             type.setText(data)
             var print_type = data?.let { get_last_text(it) }
-            text.setText("$print_type 배출해주세요!\n더 자세한 분리수거 방법은 챗봇에서\n확인해주세요")
+            text.setText("$print_type 배출해주세요!\n더 자세한 분리 배출 방법은 챗봇에서\n확인해주세요")
         }
 
         val home = findViewById<LinearLayout>(R.id.home)

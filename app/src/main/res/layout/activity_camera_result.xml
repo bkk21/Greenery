@@ -69,7 +69,7 @@
                         android:id="@+id/Textmain"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="이렇게 분리수거 해보세요!"
+                        android:text="이렇게 분리 배출 해보세요!"
                         android:textStyle="bold"
                         android:textSize="28sp"
                         android:textColor="#000"
