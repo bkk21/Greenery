@@ -44,10 +44,15 @@ class Camera_Result : AppCompatActivity() {
         // SharedPreferences 생성 및 사진 주소 저장
         val sharedPreference = getSharedPreferences("photo", MODE_PRIVATE)
         val data = sharedPreference.getString("data", "")
+        val data_yes = sharedPreference.getInt("data_yes", 0)
 
         var currentPhotoUri = getUriFromSharedPreferences()
 
-        imageView.setImageURI(currentPhotoUri)
+        //사진 찍으면 data_yes = 1로 처리
+        //챗봇 중복 방지
+        if(data_yes != 0){
+            imageView.setImageURI(currentPhotoUri)
+        }
 
         if(data != "") {
             type.setText(data)
@@ -60,6 +65,14 @@ class Camera_Result : AppCompatActivity() {
         val chat = findViewById<LinearLayout>(R.id.chat)
 
         home.setOnClickListener {
+
+            //sharedpreference 생성 및 data 삭제
+            val sharedPreference = getSharedPreferences("photo", MODE_PRIVATE)
+            val editor  : SharedPreferences.Editor = sharedPreference.edit()
+            editor.putString("data", "")
+            editor.putInt("data_yes", 0)
+            editor.apply()
+
             val joinIntent = Intent(this@Camera_Result, MainActivity::class.java)
             startActivity(joinIntent)
             overridePendingTransition(0, 0)
@@ -102,6 +115,4 @@ class Camera_Result : AppCompatActivity() {
 
         return text + selectedValue
     }
-
-
 }

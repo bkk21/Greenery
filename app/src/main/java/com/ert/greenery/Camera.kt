@@ -26,11 +26,13 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.lifecycle.lifecycleScope
 import com.ert.greenery.Retrofit2.APIS
 import com.ert.greenery.Retrofit2.PM_file_Result
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -77,6 +79,13 @@ class Camera : AppCompatActivity() {
         val earth = findViewById<RelativeLayout>(R.id.earth)
 
         home.setOnClickListener {
+            //sharedpreference 생성 및 data 삭제
+            val sharedPreference = getSharedPreferences("photo", MODE_PRIVATE)
+            val editor  : SharedPreferences.Editor = sharedPreference.edit()
+            editor.putString("data", "")
+            editor.putInt("data_yes", 0)
+            editor.apply()
+
             val joinIntent = Intent(this@Camera, MainActivity::class.java)
             startActivity(joinIntent)
             overridePendingTransition(0, 0)
@@ -123,21 +132,6 @@ class Camera : AppCompatActivity() {
         }
     }
 
-    // 다른 권한 등도 확인이 가능하도록
-    /*fun checkPermission(permissions: Array<out String>, type:Int):Boolean{
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            for (permission in permissions){
-                if(ContextCompat.checkSelfPermission(this, permission)
-                    != PackageManager.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(this, permissions, type)
-                    return false
-                }
-            }
-        }
-
-        return true
-    }*/
-
     fun checkPermission(permissions: Array<out String>, type:Int):Boolean{
         var permission = mutableMapOf<String, String>()
         permission["camera"] = Manifest.permission.CAMERA
@@ -166,7 +160,9 @@ class Camera : AppCompatActivity() {
             val sharedPreference = getSharedPreferences("photo", MODE_PRIVATE)
             val editor  : SharedPreferences.Editor = sharedPreference.edit()
             editor.putString("photo_url", currentPhotoUri.toString())
+            editor.putInt("data_yes", 1)
             editor.commit() // data 저장
+
 
             startActivityForResult(itt, CAMERA_CODE)
         }
@@ -200,7 +196,6 @@ class Camera : AppCompatActivity() {
         val loading = findViewById<LinearLayout>(R.id.loading_view)
         loading.visibility = View.VISIBLE
 
-
         val file = File(file_text)
 
         if (!file.exists()) {
@@ -220,46 +215,75 @@ class Camera : AppCompatActivity() {
         val apiService = retrofit.create(ApiService::class.java)
 
         // 코루틴을 사용하여 백그라운드 스레드에서 네트워크 호출 수행
-        GlobalScope.launch(Dispatchers.IO) {
-            val call = apiService.uploadFile(filePart)
-            val response = call.execute()
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val call = apiService.uploadFile(filePart)
+                val response = call.execute()
 
-            if (response.isSuccessful) {
-                val responseBody = response.body()
-                // 처리할 내용 추가
-                Log.d("결과", "${responseBody?.toString()}")
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    // 처리할 내용 추가
+                    Log.d("결과", "${responseBody?.toString()}")
 
-                //sharedpreference 생성 및 사진 주소 저장
-                val sharedPreference = getSharedPreferences("photo", MODE_PRIVATE)
-                val editor  : SharedPreferences.Editor = sharedPreference.edit()
+                    //sharedpreference 생성 및 사진 주소 저장
+                    val sharedPreference = getSharedPreferences("photo", MODE_PRIVATE)
+                    val editor  : SharedPreferences.Editor = sharedPreference.edit()
 
-                // shared 저장
-                if (!responseBody?.data.isNullOrEmpty()) {
-                    // responseBody?.data가 null이 아니고 비어있지 않으면 첫 번째 요소 저장
-                    editor.putString("data", responseBody?.data?.get(0))
-                } else {
-                    // responseBody?.data가 null이거나 비어있으면 빈 문자열 저장
-                    editor.putString("data", "")
+                    // shared 저장
+                    if (!responseBody?.data.isNullOrEmpty()) {
+                        // responseBody?.data가 null이 아니고 비어있지 않으면 첫 번째 요소 저장
+                        editor.putString("data", responseBody?.data?.get(0))
+                    } else {
+                        // responseBody?.data가 null이거나 비어있으면 빈 문자열 저장
+                        editor.putString("data", "")
+                    }
+                    editor.apply() // 비동기적으로 data 저장!
+
+                    //sharedpreference 생성 및 사진 주소 저장
+                    val sharedPreference2 = getSharedPreferences("visit", MODE_PRIVATE)
+                    val editor2  : SharedPreferences.Editor = sharedPreference2.edit()
+                    editor2.putInt("camera", 1)
+                    editor2.apply()
+
+                    //화면 전환
+                    val joinIntent = Intent(this@Camera, Camera_Result::class.java)
+                    startActivity(joinIntent)
+                    overridePendingTransition(0, 0)
+                    finish()
                 }
-                editor.apply() // 비동기적으로 data 저장!
+                else {
+                    // 실패 처리 로직
+                    withContext(Dispatchers.Main) {
+                        val loading = findViewById<LinearLayout>(R.id.loading_view)
+                        loading.visibility = View.INVISIBLE
+                        Log.d("업로드 실패", "${response.code()} ${response.message()}")
+                        val img = findViewById<ImageView>(R.id.imageView)
+                        val text1 = findViewById<TextView>(R.id.text1)
+                        val text2 = findViewById<TextView>(R.id.text2)
+                        img.setImageResource(R.drawable.server_error)
+                        text1.text = "서버 오류 안내"
+                        text2.text = "서버 연결에 문제가 발생했습니다.\n잠시 후 다시 시도해주세요"
+                    }
 
-                //화면 전환
-                val joinIntent = Intent(this@Camera, Camera_Result::class.java)
-                startActivity(joinIntent)
-                overridePendingTransition(0, 0)
-                finish()
-            }
-            else {
-                Log.d("업로드 실패", "${response.code()} ${response.message()}")
-                val img = findViewById<ImageView>(R.id.imageView)
-                val text1 = findViewById<TextView>(R.id.text1)
-                val text2 = findViewById<TextView>(R.id.text2)
-                img.setImageResource(R.drawable.server_error)
-                text1.setText("서버 오류 안내")
-                text2.setText("서버 연결에 문제가 발생했습니다.\n잠시 후 다시 시도해주세요")
+                }
+            } catch (e: Exception) {
+                val loading = findViewById<LinearLayout>(R.id.loading_view)
+                loading.visibility = View.INVISIBLE
+                // 네트워크 요청 중 예외 발생
+                withContext(Dispatchers.Main) {
+                    // UI 스레드에서 에러 메시지 표시
+                    Log.e("Network Error", "서버 연결 실패: ${e.message}")
+                    val img = findViewById<ImageView>(R.id.imageView)
+                    val text1 = findViewById<TextView>(R.id.text1)
+                    val text2 = findViewById<TextView>(R.id.text2)
+                    img.setImageResource(R.drawable.server_error)
+                    text1.text = "서버 오류 안내"
+                    text2.text = "서버 연결에 문제가 발생했습니다.\n잠시 후 다시 시도해주세요"
+                }
             }
         }
     }
+
 
     interface ApiService {
         @Multipart
@@ -278,6 +302,4 @@ class Camera : AppCompatActivity() {
 
         return FileProvider.getUriForFile(this, "com.ert.greenery.fileprovider", imageFile)
     }
-
-
 }

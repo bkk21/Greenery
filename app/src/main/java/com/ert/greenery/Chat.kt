@@ -2,6 +2,7 @@ package com.ert.greenery
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,7 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.ScrollView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import com.ert.greenery.Retrofit2.APIS
@@ -43,7 +45,7 @@ class Chat : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
-        chat_first()
+        visit_check()
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -58,7 +60,15 @@ class Chat : AppCompatActivity() {
         img.visibility = View.INVISIBLE
         var currentPhotoUri = getUriFromSharedPreferences()
 
-        img.setImageURI(currentPhotoUri)
+        // SharedPreferences 생성 및 사진 주소 저장
+        val sharedPreference = getSharedPreferences("photo", MODE_PRIVATE)
+        val data_yes = sharedPreference.getInt("data_yes", 0)
+
+        //사진 찍으면 data_yes = 1로 처리
+        //챗봇 중복 방지
+        if(data_yes != 0){
+            img.setImageURI(currentPhotoUri)
+        }
 
         chat_send.setOnClickListener {
             chat_send()
@@ -66,25 +76,119 @@ class Chat : AppCompatActivity() {
         }
 
         home.setOnClickListener {
+
+            //sharedpreference 생성 및 data 삭제
+            val sharedPreference = getSharedPreferences("photo", MODE_PRIVATE)
+            val editor  : SharedPreferences.Editor = sharedPreference.edit()
+            editor.putString("data", "")
+            editor.putInt("data_yes", 0)
+            editor.apply()
+
+            //sharedpreference camera 방문 여부 저장
+            val sharedPreference2 = getSharedPreferences("visit", MODE_PRIVATE)
+            val editor2  : SharedPreferences.Editor = sharedPreference2.edit()
+            editor2.putInt("camera", 1)
+            editor2.apply()
+
             val joinIntent = Intent(this@Chat, MainActivity::class.java)
             startActivity(joinIntent)
             overridePendingTransition(0, 0)
+
             finish()
         }
 
         camera.setOnClickListener {
+
+            //sharedpreference 생성 및 data 삭제
+            val sharedPreference = getSharedPreferences("photo", MODE_PRIVATE)
+            val editor  : SharedPreferences.Editor = sharedPreference.edit()
+            editor.putString("data", "")
+            editor.putInt("data_yes", 0)
+            editor.apply()
+
+            //sharedpreference camera 방문 여부 저장
+            val sharedPreference2 = getSharedPreferences("visit", MODE_PRIVATE)
+            val editor2  : SharedPreferences.Editor = sharedPreference2.edit()
+            editor2.putInt("camera", 1)
+            editor2.apply()
+
+            val joinIntent = Intent(this@Chat, Camera::class.java)
+            startActivity(joinIntent)
+            overridePendingTransition(0, 0)
+
+            finish()
+        }
+
+        chat.setOnClickListener {
+
+            //sharedpreference 생성 및 data 삭제
+            val sharedPreference = getSharedPreferences("photo", MODE_PRIVATE)
+            val editor  : SharedPreferences.Editor = sharedPreference.edit()
+            editor.putString("data", "")
+            editor.putInt("data_yes", 0)
+            editor.apply()
+
+            //sharedpreference camera 방문 여부 저장
+            val sharedPreference2 = getSharedPreferences("visit", MODE_PRIVATE)
+            val editor2  : SharedPreferences.Editor = sharedPreference2.edit()
+            editor2.putInt("camera", 1)
+            editor2.apply()
+
+            val joinIntent = Intent(this@Chat, Chat::class.java)
+            startActivity(joinIntent)
+            overridePendingTransition(0, 0)
+
+            finish()
+        }
+    }
+
+    fun visit_check(){
+        //sharedpreference 생성 및 사진 주소 저장
+        val sharedPreference2 = getSharedPreferences("visit", MODE_PRIVATE)
+        val visit_result = sharedPreference2.getInt("camera",0)
+
+        //sharedpreference 생성 및 data 삭제
+        val sharedPreference = getSharedPreferences("photo", MODE_PRIVATE)
+        val data = sharedPreference.getString("data","")
+        val data_yes = sharedPreference.getInt("data_yes", 0)
+
+        if(data_yes == 0){
+            Log.d("data_yes_photo", "data_yes_photo")
+            Toast.makeText(this@Chat, "카메라 인식을 먼저 해주세요", Toast.LENGTH_LONG)
+                .show()
+
+            //화면 전환
             val joinIntent = Intent(this@Chat, Camera::class.java)
             startActivity(joinIntent)
             overridePendingTransition(0, 0)
             finish()
         }
 
-        chat.setOnClickListener {
-            val joinIntent = Intent(this@Chat, Chat::class.java)
+        if(data == ""){
+            Log.d("data", "data")
+            Toast.makeText(this@Chat, "카메라 인식을 먼저 해주세요", Toast.LENGTH_LONG)
+                .show()
+
+            //화면 전환
+            val joinIntent = Intent(this@Chat, Camera::class.java)
             startActivity(joinIntent)
             overridePendingTransition(0, 0)
             finish()
         }
+
+        if(visit_result == 0){
+            Log.d("visit_result", "visit_result")
+            Toast.makeText(this@Chat, "카메라 인식을 먼저 해주세요", Toast.LENGTH_LONG)
+                .show()
+
+            //화면 전환
+            val joinIntent = Intent(this@Chat, Camera::class.java)
+            startActivity(joinIntent)
+            overridePendingTransition(0, 0)
+            finish()
+        }
+
+        chat_first()
     }
 
     fun getUriFromSharedPreferences(): Uri? {
@@ -100,7 +204,9 @@ class Chat : AppCompatActivity() {
 
         // SharedPreferences 생성 및 사진 주소 저장
         val sharedPreference = getSharedPreferences("photo", MODE_PRIVATE)
-        val data_text = sharedPreference.getString("data", "")
+        var data_text = sharedPreference.getString("data", "")
+
+        Log.d("data", data_text.toString())
 
         val data = PM_Chat_first(data_text)
         var pb = findViewById<ProgressBar>(R.id.progressBar)
@@ -123,6 +229,8 @@ class Chat : AppCompatActivity() {
 
                     msg.isEnabled = true
                     send_history = response.body()?.history!!
+
+                    data_text = ""
 
                 }
             }
@@ -164,7 +272,6 @@ class Chat : AppCompatActivity() {
                     msg.setText("")
                     msg.isEnabled = true
                     send_history = response.body()?.history!!
-
                 }
             }
 
