@@ -26,7 +26,10 @@
   - <a href="https://www.flaticon.com/kr/free-icons/" title="새싹 아이콘">새싹 아이콘  제작자: Nikita Golubev - Flaticon</a>
 <br><br>
 
-# 💬 ChatBot - Prompt Engineering
+# 💬 ChatBot - Prompt Engineering / Fine-Tuning
+- Fine-Tuning
+  - RAG를 활용하여 Fine-Tuning 진행
+  - 할루시네이션 해결<br>
 - Prompt 일부
   - 역할 부여 및 가이드 라인 제공
 ```
