@@ -27,6 +27,7 @@
 <br><br>
 
 # 💬 ChatBot - Prompt Engineering / Fine-Tuning
+- 챗봇의 경우 서버에서 작업인 진행되어 해당 부분의 코드는 다른 레포지토리에 커밋 될 예정입니다.
 - Fine-Tuning
   - RAG를 활용하여 Fine-Tuning 진행
   - 할루시네이션 해결<br>
