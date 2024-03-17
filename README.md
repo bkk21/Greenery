@@ -4,6 +4,7 @@
 - yolo v8과 공공 데이터를 활용한 이미지 학습
 [Greenery Recyclable Waste Detection](https://github.com/the0807/Greenery-Recyclable-Waste-Detection)
 - ChatGPT Prompt Engineering을 통해 분리 배출 방법에 관한 연관성 높은 답변 도출
+- ChatGPT Fine-Tuning(RAG)를 통해 성능 향상 (진행 중 - 추후 관련 레포지토리 생성 예정)
 <br><br>
 
 # 🏢 Position
