@@ -160,6 +160,7 @@ class Camera : AppCompatActivity() {
             val sharedPreference = getSharedPreferences("photo", MODE_PRIVATE)
             val editor  : SharedPreferences.Editor = sharedPreference.edit()
             editor.putString("photo_url", currentPhotoUri.toString())
+            //Log.d("camera", currentPhotoUri.toString())
             editor.putInt("data_yes", 1)
             editor.commit() // data 저장
 
@@ -208,7 +209,7 @@ class Camera : AppCompatActivity() {
         val filePart = MultipartBody.Part.createFormData("file", file.name, requestBody)
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://csgpu.kku.ac.kr:51203/")
+            .baseUrl("http://csgpu.kku.ac.kr:5123/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
