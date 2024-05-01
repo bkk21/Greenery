@@ -102,8 +102,8 @@ class MainActivity : AppCompatActivity() {
         val toolbar_image = view.findViewById<ImageView>(R.id.toolbar_image)
 
         toolbar_image.setOnClickListener {
-            //
-
+            val bottomSheet = BottomSheetFragment()
+            bottomSheet.show(supportFragmentManager, bottomSheet.tag)
         }
 
         //val search_btn = findViewById<LinearLayout>(R.id.search)
