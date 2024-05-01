@@ -16,51 +16,41 @@
         android:orientation="vertical"
         android:layout_weight="1">
 
-<!--        <androidx.appcompat.widget.Toolbar-->
-<!--            android:id="@+id/toolbar"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="?attr/actionBarSize"-->
-<!--            app:titleTextColor="#000"-->
-<!--            android:elevation="15dp"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"-->
-<!--            tools:ignore="MissingConstraints">-->
-
-<!--            <TextView-->
+<!--            <androidx.appcompat.widget.Toolbar-->
+<!--                xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--                xmlns:app="http://schemas.android.com/apk/res-auto"-->
 <!--                android:layout_width="match_parent"-->
 <!--                android:layout_height="match_parent"-->
-<!--                android:text="Greenery"-->
-<!--                android:gravity="center"-->
-<!--                android:textColor="#000"-->
-<!--                android:id="@+id/toolbar_title"-->
-<!--                android:textStyle="bold"-->
-<!--                android:textSize="25sp" />-->
-<!--        </androidx.appcompat.widget.Toolbar>-->
+<!--                android:id="@+id/toolbar"-->
+<!--                android:elevation="10sp"-->
+<!--                xmlns:tools="http://schemas.android.com/tools"-->
+<!--                android:minHeight="?attr/actionBarSize"-->
+<!--                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
+<!--                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"-->
+<!--                >-->
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:text="Greenery"-->
+<!--                        android:gravity="center"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:id="@+id/toolbar_title"-->
+<!--                        android:textColor="#000"-->
+<!--                        android:textSize="25sp" />-->
 
-            <androidx.appcompat.widget.Toolbar
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/toolbar"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:minHeight="?attr/actionBarSize"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                >
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="Greenery"
-                    android:gravity="center"
-                    android:layout_gravity="center"
-                    android:textStyle="bold"
-                    android:id="@+id/toolbar_title"
-                    android:textColor="#000"
-                    android:textSize="25sp" />
+<!--            </androidx.appcompat.widget.Toolbar>-->
 
-            </androidx.appcompat.widget.Toolbar>
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFF"
+            app:titleTextColor="#000"
+            android:elevation="10dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            tools:ignore="MissingConstraints"/>
 
     </LinearLayout>
 
@@ -74,7 +64,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="8"
+            android:layout_weight="9"
             android:orientation="vertical"
             android:weightSum="10">
 
@@ -82,7 +72,7 @@
                 android:id="@+id/chat_log"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="8.5"
+                android:layout_weight="8.7"
                 android:orientation="vertical">
 
                 <ScrollView
@@ -115,17 +105,17 @@
                             android:background="@drawable/gpt_back"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="안녕하세요!\n배출 방법을 안내하는 AI: 그리너리입니다.\n\n분리 배출 방법이 궁금한 제품의 사진 또는 이름을 보내주세요!"
-                            android:gravity="center"
+                            android:text="안녕하세요!\n배출 방법을 안내하는 AI: Greenery입니다.\n\n제품명 또는 사진을 보내주세요!"
+                            android:gravity="center_vertical"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:textSize="18sp"
                             android:layout_marginBottom="6dp"/>
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="2px"
-                            android:background="#808080" />
+<!--                        <View-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="2px"-->
+<!--                            android:background="#808080" />-->
                     </LinearLayout>
                 </ScrollView>
 
@@ -142,7 +132,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1.5"
+                android:layout_weight="1.3"
                 android:orientation="horizontal"
                 android:weightSum="5">
 
@@ -211,112 +201,112 @@
         </LinearLayout>
 
 <!--        하단 메뉴 바-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:background="@drawable/outline"
-            android:paddingTop="10dp">
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:background="@drawable/outline"-->
+<!--            android:paddingTop="10dp">-->
 
-            <LinearLayout
-                android:id="@+id/search"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
+<!--            <LinearLayout-->
+<!--                android:id="@+id/search"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:orientation="vertical">-->
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/search_icon"
-                        android:gravity="center"/>
-                </LinearLayout>
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="0dp"-->
+<!--                    android:layout_weight="1">-->
+<!--                    <ImageView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:src="@drawable/search_icon"-->
+<!--                        android:gravity="center"/>-->
+<!--                </LinearLayout>-->
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="Search"
-                        android:textSize="20sp"
-                        android:textColor="#000"
-                        android:gravity="center"/>
-                </LinearLayout>
-            </LinearLayout>
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="0dp"-->
+<!--                    android:layout_weight="1">-->
+<!--                    <TextView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:text="Search"-->
+<!--                        android:textSize="20sp"-->
+<!--                        android:textColor="#000"-->
+<!--                        android:gravity="center"/>-->
+<!--                </LinearLayout>-->
+<!--            </LinearLayout>-->
 
-            <LinearLayout
-                android:id="@+id/chat"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
+<!--            <LinearLayout-->
+<!--                android:id="@+id/chat"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:orientation="vertical">-->
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/chat_icon"
-                        android:gravity="center"/>
-                </LinearLayout>
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="0dp"-->
+<!--                    android:layout_weight="1">-->
+<!--                    <ImageView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:src="@drawable/chat_icon"-->
+<!--                        android:gravity="center"/>-->
+<!--                </LinearLayout>-->
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="ChatBot"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="#000"
-                        android:gravity="center"/>
-                </LinearLayout>
-            </LinearLayout>
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="0dp"-->
+<!--                    android:layout_weight="1">-->
+<!--                    <TextView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:text="ChatBot"-->
+<!--                        android:textSize="20sp"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:textColor="#000"-->
+<!--                        android:gravity="center"/>-->
+<!--                </LinearLayout>-->
+<!--            </LinearLayout>-->
 
-            <LinearLayout
-                android:id="@+id/map"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
+<!--            <LinearLayout-->
+<!--                android:id="@+id/map"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:orientation="vertical">-->
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/map_icon"
-                        android:gravity="center"/>
-                </LinearLayout>
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="0dp"-->
+<!--                    android:layout_weight="1">-->
+<!--                    <ImageView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:src="@drawable/map_icon"-->
+<!--                        android:gravity="center"/>-->
+<!--                </LinearLayout>-->
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="Map"
-                        android:textSize="20sp"
-                        android:textColor="#000"
-                        android:gravity="center"/>
-                </LinearLayout>
-            </LinearLayout>
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="0dp"-->
+<!--                    android:layout_weight="1">-->
+<!--                    <TextView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:text="Map"-->
+<!--                        android:textSize="20sp"-->
+<!--                        android:textColor="#000"-->
+<!--                        android:gravity="center"/>-->
+<!--                </LinearLayout>-->
+<!--            </LinearLayout>-->
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
     </LinearLayout>
 
 </LinearLayout>

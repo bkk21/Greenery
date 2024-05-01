@@ -1,8 +1,15 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.Greenery" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">#6DD07D</item>
+<!--        <item name="colorPrimary">#6DD07D</item>-->
+<!--        <item name="android:windowFullscreen">true</item>-->
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:enforceNavigationBarContrast" tools:targetApi="q">false</item>
+        <item name="android:enforceStatusBarContrast" tools:targetApi="q">false</item>
     </style>
 
     <style name="Theme.Greenery" parent="Base.Theme.Greenery" />
+
 </resources>
