@@ -308,7 +308,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:$USER_HOME$/Library/Android/sdk/icons/material/materialicons/send/baseline_send_24.xml" />
+                                      <entry key="url" value="file:$USER_HOME$/Library/Android/sdk/icons/material/materialicons/location_on/baseline_location_on_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -318,8 +318,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="2d2d2d" />
-                            <entry key="outputName" value="send_icon" />
+                            <entry key="color" value="6dd07d" />
+                            <entry key="outputName" value="map_icon" />
                           </map>
                         </option>
                       </PersistentState>
