@@ -11,8 +11,8 @@ android {
         applicationId = "com.ert.greenery"
         minSdk = 24
         targetSdk = 33
-        versionCode = 2
-        versionName = "1.0.1"
+        versionCode = 4
+        versionName = "1.0.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -48,4 +48,7 @@ dependencies {
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
+    implementation ("com.kakao.sdk:v2-all:2.20.1")
+    implementation ("com.kakao.maps.open:android:2.9.5")
+    implementation ("com.google.android.gms:play-services-location:18.0.0")
 }

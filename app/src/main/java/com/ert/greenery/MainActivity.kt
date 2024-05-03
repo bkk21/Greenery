@@ -16,8 +16,6 @@ import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -63,6 +61,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var send_history : MutableList<Map<String, String>>
 
 
+
     lateinit var log: LinearLayout
     var num = 0
     var isfirst = 1 // 처음이면 1 아니면 0
@@ -90,7 +89,6 @@ class MainActivity : AppCompatActivity() {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-
         supportActionBar?.setDisplayShowHomeEnabled(true)
         //supportActionBar?.title = "비밀번호 변경"
 
@@ -104,6 +102,9 @@ class MainActivity : AppCompatActivity() {
         toolbar_image.setOnClickListener {
             val bottomSheet = BottomSheetFragment()
             bottomSheet.show(supportFragmentManager, bottomSheet.tag)
+
+            //val intent = Intent(this, location_map::class.java)
+            //startActivity(intent)
         }
 
         //val search_btn = findViewById<LinearLayout>(R.id.search)
