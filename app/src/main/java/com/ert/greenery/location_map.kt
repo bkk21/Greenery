@@ -1,26 +1,43 @@
 package com.ert.greenery
 
+import android.content.Context
 import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Location
+import android.location.LocationManager
+import android.location.LocationRequest
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.Toolbar
+import com.google.android.gms.location.FusedLocationProviderClient
 import com.kakao.vectormap.KakaoMap
 import com.kakao.vectormap.KakaoMapReadyCallback
 import com.kakao.vectormap.KakaoMapSdk
 import com.kakao.vectormap.MapLifeCycleCallback
 import com.kakao.vectormap.MapView
 import java.security.MessageDigest
+import com.google.android.gms.location.*
+import android.widget.Button
+import java.io.IOException
 
 class location_map : AppCompatActivity() {
 
     lateinit var mapView: MapView
+
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_location_map)
+
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.title = "Greenery 지도"
 
         KakaoMapSdk.init(this, "34241e07f7686ac80f7daa6ba4ddaac2")
 
@@ -39,6 +56,7 @@ class location_map : AppCompatActivity() {
             }
         })
     }
+
 
     override fun onResume() {
         super.onResume()
