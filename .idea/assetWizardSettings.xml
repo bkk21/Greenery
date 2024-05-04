@@ -318,8 +318,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="6dd07d" />
-                            <entry key="outputName" value="map_icon" />
+                            <entry key="color" value="ff4a4a" />
+                            <entry key="outputName" value="my_location" />
                           </map>
                         </option>
                       </PersistentState>

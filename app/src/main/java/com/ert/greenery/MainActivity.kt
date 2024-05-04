@@ -3,14 +3,17 @@ package com.ert.greenery
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.location.Location
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
 import android.util.TypedValue
@@ -26,6 +29,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
@@ -34,6 +38,15 @@ import com.ert.greenery.Retrofit2.PM_Chat
 import com.ert.greenery.Retrofit2.PM_Chat_Result
 import com.ert.greenery.Retrofit2.PM_Chat_first
 import com.ert.greenery.Retrofit2.PM_file_Result
+import com.ert.greenery.Retrofit2.PM_get_near_trash
+import com.ert.greenery.Retrofit2.PM_get_near_trash_Result
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import com.kakao.vectormap.LatLng
+import com.kakao.vectormap.camera.CameraUpdateFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -60,7 +73,13 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var send_history : MutableList<Map<String, String>>
 
+    private var la: Double? = null
+    private var lo: Double? = null
 
+    private var mFusedLocationProviderClient: FusedLocationProviderClient? = null // 현재 위치를 가져오기 위한 변수
+    lateinit var mLastLocation: Location // 위치 값을 가지고 있는 객체
+    internal lateinit var mLocationRequest: LocationRequest // 위치 정보 요청의 매개변수를 저장하는
+    private val REQUEST_PERMISSION_LOCATION = 10
 
     lateinit var log: LinearLayout
     var num = 0
@@ -98,6 +117,16 @@ class MainActivity : AppCompatActivity() {
         toolbar.addView(view)
 
         val toolbar_image = view.findViewById<ImageView>(R.id.toolbar_image)
+
+        mLocationRequest =  LocationRequest.create().apply {
+
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+
+        }
+
+        if (checkPermissionForLocation(this)) {
+            startLocationUpdates()
+        }
 
         toolbar_image.setOnClickListener {
             val bottomSheet = BottomSheetFragment()
@@ -165,6 +194,7 @@ class MainActivity : AppCompatActivity() {
                     var img = findViewById<ImageView>(R.id.img)
                     img.visibility = View.VISIBLE
                     createView_gpt(response.body()?.msg.toString())
+                    get_trash(la!!, lo!!, response.body()?.result.toString())
 
                     msg.isEnabled = true
 
@@ -213,6 +243,7 @@ class MainActivity : AppCompatActivity() {
                     var img = findViewById<ImageView>(R.id.img)
                     img.visibility = View.VISIBLE
                     createView_gpt(response.body()?.msg.toString())
+                    get_trash(la!!, lo!!, response.body()?.result.toString())
 
                     msg.isEnabled = true
                     send_history = response.body()?.history!!
@@ -255,6 +286,7 @@ class MainActivity : AppCompatActivity() {
                     pb.visibility = View.INVISIBLE
 
                     createView_gpt(response.body()?.msg.toString())
+                    get_trash(la!!, lo!!, response.body()?.result.toString())
 
                     msg.setText("")
                     msg.isEnabled = true
@@ -418,6 +450,106 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+        if (requestCode == REQUEST_PERMISSION_LOCATION) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startLocationUpdates()
+
+            } else {
+                Log.d("ttt", "onRequestPermissionsResult() _ 권한 허용 거부")
+                Toast.makeText(this, "권한이 없어 해당 기능을 실행할 수 없습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun startLocationUpdates() {
+
+        //FusedLocationProviderClient의 인스턴스를 생성.
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return
+        }
+        // 기기의 위치에 관한 정기 업데이트를 요청하는 메서드 실행
+        // 지정한 루퍼 스레드(Looper.myLooper())에서 콜백(mLocationCallback)으로 위치 업데이트를 요청
+        mFusedLocationProviderClient!!.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper())
+    }
+
+    // 시스템으로 부터 위치 정보를 콜백으로 받음
+    private val mLocationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult) {
+            // 시스템에서 받은 location 정보를 onLocationChanged()에 전달
+            locationResult.lastLocation
+            onLocationChanged(locationResult.lastLocation)
+        }
+    }
+
+    // 시스템으로 부터 받은 위치정보를 화면에 갱신해주는 메소드
+    fun onLocationChanged(location: Location){
+        mLastLocation = location
+
+        la = mLastLocation.latitude
+        Log.d("위도", "위도 : " + mLastLocation.latitude) // 갱신 된 위도
+
+        lo = mLastLocation.longitude
+        Log.d("경도", "경도 : " + mLastLocation.longitude)// 갱신 된 경도
+
+        //CameraUpdateFactory.newCenterPosition(LatLng.from(36.9458377, 127.9088474))
+        //showIconLabel(36.9458377, 127.9088474)
+    }
+
+    fun get_trash(la:Double, lo:Double, result:String){
+
+        //로딩 시작
+        var pb = findViewById<ProgressBar>(R.id.progressBar)
+        pb.visibility = View.VISIBLE
+
+
+        //val data = PM_get_near_trash(la, lo, result)
+        //test용 더현대
+        val data = PM_get_near_trash(37.525387412764935, 126.92783852449817, result)
+        Log.d("보내는 데이터", data.toString())
+
+        //통신 관련
+        api.get_near_trash(data).enqueue(object : Callback<PM_get_near_trash_Result> {
+
+            override fun onResponse(call: Call<PM_get_near_trash_Result>, response: Response<PM_get_near_trash_Result>) {
+                //Log.d("log",response.toString())
+                Log.d("log", response.body().toString())
+
+                // 맨 처음 문장 실행
+                if(!response.body().toString().isEmpty()){
+                    //처리 로직.
+                    Log.d("결과", response.body()?.trash_data.toString())
+                    pb.visibility = View.INVISIBLE
+                }
+            }
+
+            override fun onFailure(call: Call<PM_get_near_trash_Result>, t: Throwable) {
+                // 실패
+                Log.d("log",t.message.toString())
+                Log.d("log","fail")
+                pb.visibility = View.INVISIBLE
+            }
+
+        }) //여기까지가 통신 한 묶음
+    }
+
+
+    // 위치 권한이 있는지 확인하는 메서드
+    private fun checkPermissionForLocation(context: Context): Boolean {
+        // Android 6.0 Marshmallow 이상에서는 위치 권한에 추가 런타임 권한이 필요
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                true
+            } else {
+                // 권한이 없으므로 권한 요청 알림 보내기
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_PERMISSION_LOCATION)
+                false
+            }
+        } else {
+            true
+        }
     }
 
     fun checkPermission(permissions: Array<out String>, type:Int):Boolean{
@@ -557,7 +689,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     interface ApiService {
         @Multipart
         @POST("predict")
@@ -575,43 +706,6 @@ class MainActivity : AppCompatActivity() {
 
         return FileProvider.getUriForFile(this, "com.ert.greenery.fileprovider", imageFile)
     }
-
-//    private fun createView_img() {
-//        log = findViewById(R.id.log)
-//
-//        // 새 ImageView 생성
-//        val img = ImageView(applicationContext).apply {
-//            // SharedPreferences에서 저장된 URI 사용
-//            setImageURI(getUriFromSharedPreferences())
-//            scaleType = ImageView.ScaleType.FIT_CENTER // 이미지가 뷰의 중앙에 맞춰지면서 원래 크기 유지
-//
-//            // ID 설정
-//            id = num
-//            num += 1
-//
-//            // 레이아웃 설정
-//            layoutParams = LinearLayout.LayoutParams(
-//                LinearLayout.LayoutParams.WRAP_CONTENT, // 이미지의 원래 크기에 맞춤
-//                LinearLayout.LayoutParams.WRAP_CONTENT  // 이미지의 원래 크기에 맞춤
-//            ).apply {
-//                gravity = Gravity.END // 오른쪽 정렬
-//                topMargin = TypedValue.applyDimension(
-//                    TypedValue.COMPLEX_UNIT_DIP, 15f, resources.displayMetrics).toInt() // 상단 마진 설정
-//                bottomMargin = topMargin // 하단 마진 동일하게 설정
-//            }
-//        }
-//
-//        // 이미지 뷰를 레이아웃에 추가
-//        log.addView(img)
-//
-//        // 스크롤 뷰 설정
-//        val scrollView: ScrollView = findViewById(R.id.sc)
-//        scrollView.post {
-//            scrollView.fullScroll(ScrollView.FOCUS_DOWN) // 콘텐츠가 변경될 때 스크롤뷰를 맨 아래로 이동
-//        }
-
-//    }
-
 
     private fun createView_img() {
         log = findViewById(R.id.log)
@@ -672,10 +766,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     data class Size(val width: Int, val height: Int)
-
-
-
-
 
     fun getUriFromSharedPreferences(): Uri? {
         val sharedPref = getSharedPreferences("photo", MODE_PRIVATE)
