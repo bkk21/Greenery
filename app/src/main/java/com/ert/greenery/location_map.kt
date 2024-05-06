@@ -74,7 +74,21 @@ class location_map : AppCompatActivity() {
                 if (ActivityCompat.checkSelfPermission(this@location_map, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     mFusedLocationProviderClient?.lastLocation?.addOnSuccessListener { location ->
                         location?.let {
-                            showIconLabel(it.latitude, it.longitude)
+
+                            // SharedPreferences에서 위도와 경도 읽어오기
+                            val sharedPreferences = getSharedPreferences("location", MODE_PRIVATE)
+                            val latitude = sharedPreferences.getString("latitude", "0.0")?.toDouble()
+                            val longitude = sharedPreferences.getString("longitude", "0.0")?.toDouble()
+
+                            if (latitude != null) {
+                                if (longitude != null) {
+                                    showIconLabel(latitude, longitude)
+                                    Log.d("결과", "굿")
+                                }
+                            }
+                            //showIconLabel(it.latitude, it.longitude)
+                            Log.d("위경도 결과", "저장 없음")
+
                         }
                     }
                 }

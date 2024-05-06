@@ -561,13 +561,22 @@ class MainActivity : AppCompatActivity() {
         mLastLocation = location
 
         la = mLastLocation.latitude
-        Log.d("위도", "위도 : " + mLastLocation.latitude) // 갱신 된 위도
+        var tpla = la.toString()
+        Log.d("위도", mLastLocation.latitude.toString()) // 갱신 된 위도
+        Log.d("위도 문자", tpla)
 
         lo = mLastLocation.longitude
-        Log.d("경도", "경도 : " + mLastLocation.longitude)// 갱신 된 경도
+        var tplo = lo.toString()
+        Log.d("경도", mLastLocation.longitude.toString())// 갱신 된 경도
+        Log.d("경도 문자", tplo)
 
-        //CameraUpdateFactory.newCenterPosition(LatLng.from(36.9458377, 127.9088474))
-        //showIconLabel(36.9458377, 127.9088474)
+        // SharedPreferences에서 위도와 경도 읽어오기
+        val sharedPreferences = getSharedPreferences("location", MODE_PRIVATE)
+        val editor  : SharedPreferences.Editor = sharedPreferences.edit()
+        editor.putString("latitude", tpla)
+
+        editor.putString("longitude", tplo)
+        editor.commit() // data 저장
     }
 
     fun get_trash(la:Double, lo:Double){
