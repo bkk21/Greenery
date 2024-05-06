@@ -57,11 +57,18 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         var go2 = view.findViewById<TextView>(R.id.map2)
 
         go1.setOnClickListener {
+            val sharedPreference = requireActivity().getSharedPreferences("intent", AppCompatActivity.MODE_PRIVATE)
+            val editor  : SharedPreferences.Editor = sharedPreference.edit()
+            editor.putInt("value", 1)
+            editor.commit() // data 저장
             val intent = Intent(requireContext(), location_map::class.java)
             startActivity(intent)
         }
 
         go2.setOnClickListener {
+            val sharedPreference = requireActivity().getSharedPreferences("Intent", AppCompatActivity.MODE_PRIVATE)
+            val editor  : SharedPreferences.Editor = sharedPreference.edit()
+            editor.putInt("value", 2)
             val intent = Intent(requireContext(), location_map::class.java)
             startActivity(intent)
         }

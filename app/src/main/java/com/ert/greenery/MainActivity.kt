@@ -607,6 +607,8 @@ class MainActivity : AppCompatActivity() {
                     editor1.putString("addr", response.body()?.trash_data?.get(0)?.get("addr").toString())
                     editor1.putString("place", response.body()?.trash_data?.get(0)?.get("place").toString())
                     editor1.putString("type", response.body()?.trash_data?.get(0)?.get("type").toString())
+                    editor1.putString("lat", response.body()?.trash_data?.get(0)?.get("lat").toString())
+                    editor1.putString("lng", response.body()?.trash_data?.get(0)?.get("lng").toString())
                     editor1.commit() // data 저장
 
                     val sharedPreference2 = getSharedPreferences("data2", MODE_PRIVATE)
@@ -615,6 +617,9 @@ class MainActivity : AppCompatActivity() {
                     editor2.putString("place", response.body()?.trash_data?.get(1)?.get("place").toString())
                     var tp = response.body()?.trash_data?.get(1)?.get("type").toString()
                     editor2.putString("type", tp)
+                    editor2.putString("lat", response.body()?.trash_data?.get(1)?.get("lat").toString())
+                    editor2.putString("lng", response.body()?.trash_data?.get(1)?.get("lng").toString())
+
                     editor2.commit() // data 저장
 
                     pb.visibility = View.INVISIBLE

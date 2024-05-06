@@ -10,11 +10,19 @@ import android.os.Looper
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
+import com.ert.greenery.Retrofit2.APIS
+import com.ert.greenery.Retrofit2.PM_Chat_Result
+import com.ert.greenery.Retrofit2.PM_Chat_first
+import com.ert.greenery.Retrofit2.PM_get_near_trash
+import com.ert.greenery.Retrofit2.PM_get_trash
+import com.ert.greenery.Retrofit2.PM_get_trash_Result
 import com.google.android.gms.location.*
 import com.kakao.vectormap.KakaoMap
 import com.kakao.vectormap.KakaoMapReadyCallback
@@ -30,9 +38,15 @@ import com.kakao.vectormap.label.LabelStyle
 import com.kakao.vectormap.label.LabelStyles
 import com.kakao.vectormap.label.LabelTransition
 import com.kakao.vectormap.label.Transition
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class location_map : AppCompatActivity() {
+
+    //api 생성
+    val api = APIS.create()
 
     lateinit var mapView: MapView
     private var kakaoMap: KakaoMap? = null
@@ -82,8 +96,34 @@ class location_map : AppCompatActivity() {
 
                             if (latitude != null) {
                                 if (longitude != null) {
-                                    showIconLabel1(latitude, longitude)
+
+
+                                    //테스트용 더현대
+                                    showIconLabel1(37.525387412764935, 126.92783852449817)
                                     Log.d("결과", "굿")
+
+                                    val sharedPreferences2 = getSharedPreferences("intent", MODE_PRIVATE)
+                                    val value = sharedPreferences2.getInt("value", 0)
+
+                                    if (value == 1){
+                                        val sharedPreferences3 = getSharedPreferences("data1", MODE_PRIVATE)
+                                        val latitude1 = sharedPreferences3.getString("lat", "0.0")?.toDouble()
+                                        val longitude1 = sharedPreferences3.getString("lng", "0.0")?.toDouble()
+                                        //showIconLabel2(37.5218052927, 126.9256512442)
+
+                                        if (latitude1 != null) {
+                                            if (longitude1 != null) {
+                                                showIconLabel2(latitude1, longitude1)
+                                                Log.d("선택한 위도", ""+latitude1)
+                                                Log.d("선택한 경도", ""+longitude1)
+                                            }
+                                        }
+                                    }
+                                    data_get(37.525387412764935, 126.92783852449817)
+
+                                    //showIconLabel1(latitude, longitude)
+                                    //Log.d("결과", "굿")
+                                    //data_get(latitude, longitude)
                                 }
                             }
                             //showIconLabel(it.latitude, it.longitude)
@@ -94,6 +134,30 @@ class location_map : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    fun data_get(la:Double, lo:Double){
+
+        val data = PM_get_trash(la, lo, 10000)
+
+        api.get_trash(data).enqueue(object : Callback<PM_get_trash_Result> {
+
+            override fun onResponse(call: Call<PM_get_trash_Result>, response: Response<PM_get_trash_Result>) {
+
+                Log.d("log", response.body().toString())
+
+                // 맨 처음 문장 실행
+                if(!response.body().toString().isEmpty()){
+                    Log.d("결과테스트",response.body()?.trash_data.toString())
+                }
+            }
+
+            override fun onFailure(call: Call<PM_get_trash_Result>, t: Throwable) {
+                // 실패
+                Log.d("log",t.message.toString())
+                Log.d("log","fail")
+            }
+        }) //여기까지가 통신 한 묶음
     }
 
     //일반쓰레기
@@ -147,7 +211,7 @@ class location_map : AppCompatActivity() {
         val text = "test 라벨"
         kakaoMap?.let {
             it.labelManager?.layer?.addLabel(LabelOptions.from(text, pos).setStyles(styles))
-            it.moveCamera(CameraUpdateFactory.newCenterPosition(pos, 16), CameraAnimation.from(duration))
+            //it.moveCamera(CameraUpdateFactory.newCenterPosition(pos, 16), CameraAnimation.from(duration))
         }
     }
 
