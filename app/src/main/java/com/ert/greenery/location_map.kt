@@ -82,7 +82,7 @@ class location_map : AppCompatActivity() {
 
                             if (latitude != null) {
                                 if (longitude != null) {
-                                    showIconLabel(latitude, longitude)
+                                    showIconLabel1(latitude, longitude)
                                     Log.d("결과", "굿")
                                 }
                             }
@@ -96,18 +96,58 @@ class location_map : AppCompatActivity() {
         })
     }
 
-    private fun showIconLabel(la: Double, lo: Double) {
+    //일반쓰레기
+    fun trash1(){
+
+    }
+
+    //재활용쓰레기
+    fun trash2(){
+
+    }
+
+    //재활용센터
+    fun trash3(){
+
+    }
+
+    //페건전지
+    fun trash4(){
+
+    }
+
+    //폐형광등
+    fun trash5(){
+
+    }
+
+    private fun showIconLabel1(la: Double, lo: Double) {
         val pos = LatLng.from(la, lo)
         val styles = kakaoMap?.labelManager?.addLabelStyles(
             LabelStyles.from(
-                LabelStyle.from(R.drawable.pink_marker)
+                LabelStyle.from(R.drawable.red_marker)
                     .setIconTransition(LabelTransition.from(Transition.None, Transition.None))
             )
         )
         val text = "test 라벨"
         kakaoMap?.let {
             it.labelManager?.layer?.addLabel(LabelOptions.from(text, pos).setStyles(styles))
-            it.moveCamera(CameraUpdateFactory.newCenterPosition(pos, 15), CameraAnimation.from(duration))
+            it.moveCamera(CameraUpdateFactory.newCenterPosition(pos, 16), CameraAnimation.from(duration))
+        }
+    }
+
+    private fun showIconLabel2(la: Double, lo: Double) {
+        val pos = LatLng.from(la, lo)
+        val styles = kakaoMap?.labelManager?.addLabelStyles(
+            LabelStyles.from(
+                LabelStyle.from(R.drawable.blue_marker)
+                    .setIconTransition(LabelTransition.from(Transition.None, Transition.None))
+            )
+        )
+        val text = "test 라벨"
+        kakaoMap?.let {
+            it.labelManager?.layer?.addLabel(LabelOptions.from(text, pos).setStyles(styles))
+            it.moveCamera(CameraUpdateFactory.newCenterPosition(pos, 16), CameraAnimation.from(duration))
         }
     }
 
@@ -122,7 +162,7 @@ class location_map : AppCompatActivity() {
     private val mLocationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
             locationResult.lastLocation?.let {
-                showIconLabel(it.latitude, it.longitude)
+                showIconLabel1(it.latitude, it.longitude)
             }
         }
     }
