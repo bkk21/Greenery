@@ -156,7 +156,7 @@ class MainActivity : AppCompatActivity() {
             if (isfirst == 1) {
                 chat_first_chat(data_text)
                 msg.setText("")
-                //chat_send()
+
                 createView_user(data_text)
             }
             else {
@@ -194,7 +194,7 @@ class MainActivity : AppCompatActivity() {
                     var img = findViewById<ImageView>(R.id.img)
                     img.visibility = View.VISIBLE
                     createView_gpt(response.body()?.msg.toString())
-                    get_trash(la!!, lo!!, response.body()?.result.toString())
+                    createView_gpt_location("[주변 쓰레기통 정보 바로 보기]")
 
                     msg.isEnabled = true
 
@@ -243,7 +243,8 @@ class MainActivity : AppCompatActivity() {
                     var img = findViewById<ImageView>(R.id.img)
                     img.visibility = View.VISIBLE
                     createView_gpt(response.body()?.msg.toString())
-                    get_trash(la!!, lo!!, response.body()?.result.toString())
+                    createView_gpt_location("[주변 쓰레기통 정보 바로 보기]")
+                    //get_trash(la!!, lo!!)
 
                     msg.isEnabled = true
                     send_history = response.body()?.history!!
@@ -286,7 +287,8 @@ class MainActivity : AppCompatActivity() {
                     pb.visibility = View.INVISIBLE
 
                     createView_gpt(response.body()?.msg.toString())
-                    get_trash(la!!, lo!!, response.body()?.result.toString())
+                    createView_gpt_location("[주변 쓰레기통 정보 바로 보기]")
+                    //get_trash(la!!, lo!!)
 
                     msg.setText("")
                     msg.isEnabled = true
@@ -430,6 +432,76 @@ class MainActivity : AppCompatActivity() {
         }
     } //createView_gpt
 
+    private fun createView_gpt_location(value:String) {
+
+        log = findViewById(R.id.log)
+
+        // 텍스트뷰 생성
+        val newtextview: TextView = TextView(applicationContext)
+
+        // 텍스트 뷰 글자 설정
+        newtextview.text = value
+
+        // 텍스트뷰 글자 크기
+        newtextview.textSize = 20f
+
+        // 배경 설정
+        val backgroundDrawable = ContextCompat.getDrawable(applicationContext, R.drawable.gpt_back)
+        newtextview.background = backgroundDrawable
+
+        // id 설정
+        newtextview.id = num
+        num += 1
+
+        // 레이아웃 설정
+        val param: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+
+        // 상단 마진 설정 (각각 15dp)
+        val marginVertical = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP, 15f, resources.displayMetrics).toInt()
+        param.topMargin = marginVertical
+        param.bottomMargin = marginVertical
+        param.marginEnd = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30f, resources.displayMetrics).toInt()
+
+        // 왼쪽 정렬 설정
+        param.gravity = Gravity.START
+
+        // padding 설정
+        val paddingInPixels = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            20f,
+            resources.displayMetrics
+        ).toInt()
+
+        newtextview.setPadding(paddingInPixels, paddingInPixels, paddingInPixels, paddingInPixels)
+
+        // 글자색 설정
+        val color = ContextCompat.getColor(applicationContext, R.color.black)
+        newtextview.setTextColor(color)
+
+        // 적용
+        newtextview.layoutParams = param
+
+        log.addView(newtextview)
+
+        // 클릭 리스너 추가
+        newtextview.setOnClickListener {
+            get_trash(la!!, lo!!)
+            val bottomSheet = BottomSheetFragment()
+            bottomSheet.show(supportFragmentManager, bottomSheet.tag)
+        }
+
+        val scrollView: ScrollView = findViewById(R.id.sc)
+
+        // 콘텐츠가 변경될 때 스크롤뷰를 맨 아래로 이동
+        scrollView.post {
+            scrollView.fullScroll(ScrollView.FOCUS_DOWN)
+        }
+    } //createView_gpt_location
+
     override fun onRequestPermissionsResult(requestCode: Int,
                                             permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -498,29 +570,44 @@ class MainActivity : AppCompatActivity() {
         //showIconLabel(36.9458377, 127.9088474)
     }
 
-    fun get_trash(la:Double, lo:Double, result:String){
+    fun get_trash(la:Double, lo:Double){
 
         //로딩 시작
         var pb = findViewById<ProgressBar>(R.id.progressBar)
         pb.visibility = View.VISIBLE
 
-
         //val data = PM_get_near_trash(la, lo, result)
         //test용 더현대
-        val data = PM_get_near_trash(37.525387412764935, 126.92783852449817, result)
+        val data = PM_get_near_trash(37.525387412764935, 126.92783852449817)
         Log.d("보내는 데이터", data.toString())
 
         //통신 관련
         api.get_near_trash(data).enqueue(object : Callback<PM_get_near_trash_Result> {
 
             override fun onResponse(call: Call<PM_get_near_trash_Result>, response: Response<PM_get_near_trash_Result>) {
-                //Log.d("log",response.toString())
+
                 Log.d("log", response.body().toString())
 
                 // 맨 처음 문장 실행
                 if(!response.body().toString().isEmpty()){
                     //처리 로직.
                     Log.d("결과", response.body()?.trash_data.toString())
+
+                    val sharedPreference1 = getSharedPreferences("data1", MODE_PRIVATE)
+                    val editor1  : SharedPreferences.Editor = sharedPreference1.edit()
+                    editor1.putString("addr", response.body()?.trash_data?.get(0)?.get("addr").toString())
+                    editor1.putString("place", response.body()?.trash_data?.get(0)?.get("place").toString())
+                    editor1.putString("type", response.body()?.trash_data?.get(0)?.get("type").toString())
+                    editor1.commit() // data 저장
+
+                    val sharedPreference2 = getSharedPreferences("data2", MODE_PRIVATE)
+                    val editor2  : SharedPreferences.Editor = sharedPreference2.edit()
+                    editor2.putString("addr", response.body()?.trash_data?.get(1)?.get("addr").toString())
+                    editor2.putString("place", response.body()?.trash_data?.get(1)?.get("place").toString())
+                    var tp = response.body()?.trash_data?.get(1)?.get("type").toString()
+                    editor2.putString("type", tp)
+                    editor2.commit() // data 저장
+
                     pb.visibility = View.INVISIBLE
                 }
             }
