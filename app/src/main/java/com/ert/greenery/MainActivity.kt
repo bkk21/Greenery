@@ -585,9 +585,9 @@ class MainActivity : AppCompatActivity() {
         var pb = findViewById<ProgressBar>(R.id.progressBar)
         pb.visibility = View.VISIBLE
 
-        //val data = PM_get_near_trash(la, lo, result)
+        val data = PM_get_near_trash(la, lo)
         //test용 더현대
-        val data = PM_get_near_trash(37.525387412764935, 126.92783852449817)
+        //val data = PM_get_near_trash(37.525387412764935, 126.92783852449817)
         Log.d("보내는 데이터", data.toString())
 
         //통신 관련
