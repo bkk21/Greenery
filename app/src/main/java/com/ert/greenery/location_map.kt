@@ -190,7 +190,7 @@ class location_map : AppCompatActivity() {
         // 라벨 생성
         labelLayer!!.addLabel(LabelOptions.from("테스트", pos).setStyles(styles))
         kakaoMap!!.moveCamera(
-            CameraUpdateFactory.newCenterPosition(pos, 15),
+            CameraUpdateFactory.newCenterPosition(pos, 16),
             CameraAnimation.from(duration)
         )
     }
