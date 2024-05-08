@@ -34,6 +34,7 @@
                         android:layout_gravity="center"
                         android:gravity="center_vertical"
                         android:text="장소명"
+                        android:textStyle="bold"
                         android:textSize="15sp"/>
                 </LinearLayout>
                 <LinearLayout

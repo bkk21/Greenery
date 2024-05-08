@@ -42,6 +42,7 @@
                                     android:layout_gravity="center"
                                     android:gravity="center_vertical"
                                     android:text="장소명"
+                                    android:textStyle="bold"
                                     android:textSize="15sp"/>
                         </LinearLayout>
                         <LinearLayout
@@ -89,6 +90,7 @@
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:text="지도\n보기"
+                            android:background="@drawable/gpt_back"
                             android:textSize="15sp"/>
                 </LinearLayout>
                 </LinearLayout>
@@ -122,6 +124,7 @@
                                             android:layout_gravity="center"
                                             android:gravity="center_vertical"
                                             android:text="장소명"
+                                            android:textStyle="bold"
                                             android:textSize="15sp"/>
                                 </LinearLayout>
                                 <LinearLayout
@@ -168,6 +171,7 @@
                                     android:layout_gravity="center"
                                     android:gravity="center"
                                     android:text="지도\n보기"
+                                    android:background="@drawable/gpt_back"
                                     android:textSize="15sp"/>
                         </LinearLayout>
                 </LinearLayout>

@@ -33,13 +33,18 @@ class detail_bottom : BottomSheetDialogFragment() {
         val add = sharedPreference1.getString("addr", "")
         val place = sharedPreference1.getString("place", "-")
         val type = sharedPreference1.getString("type", "")
-        val call_number = sharedPreference1.getString("call_number", "-")
+        val call_number = sharedPreference1.getString("call_number", "")
 
         // 뷰 찾기 및 데이터 설정
         view?.findViewById<TextView>(R.id.type)?.text = type
-        view?.findViewById<TextView>(R.id.dis)?.text = place
-        view?.findViewById<TextView>(R.id.location)?.text = add
-        view?.findViewById<TextView>(R.id.call_number)?.text = call_number
+        view?.findViewById<TextView>(R.id.dis)?.text = "상세위치 : " + place
+        view?.findViewById<TextView>(R.id.location)?.text = "주소 : " + add
+
+        if (type == "재활용센터")
+            view?.findViewById<TextView>(R.id.call_number)?.text = "재활용센터 번호 : " + call_number
+        else
+            view?.findViewById<TextView>(R.id.call_number)?.text = call_number
+
 
     }
 }

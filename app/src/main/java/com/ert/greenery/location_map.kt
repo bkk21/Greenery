@@ -3,6 +3,7 @@ package com.ert.greenery
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.ert.greenery.Retrofit2.APIS
@@ -43,6 +44,9 @@ class location_map : AppCompatActivity() {
     private val moveLabel: Label? = null
     private val polylineLabel: PolylineLabel? = null
 
+    var la = 0.0
+    var ln = 0.0
+
     var num = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,9 +56,12 @@ class location_map : AppCompatActivity() {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.title = "Greenery 지도"
 
+
+        my_location()
 
         val mapView = findViewById<MapView>(R.id.map_view)
         mapView.start(object : MapLifeCycleCallback() {
@@ -62,7 +69,8 @@ class location_map : AppCompatActivity() {
             override fun onMapError(e: Exception) {}
         }, object : KakaoMapReadyCallback() {
             override fun getPosition(): LatLng {
-                return LatLng.from(37.393865, 127.115795)
+
+                return LatLng.from(la, ln)
             }
 
             override fun onMapReady(map: KakaoMap) {
@@ -83,7 +91,13 @@ class location_map : AppCompatActivity() {
                         val value = sharedPreferences2.getInt("value", 0)
                         Log.d("value 값", ""+value)
 
+                        //내 위치 테스트용 더현대
+                        //showIconLabel(37.525387412764935, 126.92783852449817)
+                        showIconLabel(la, ln)
+                        Log.d("결과", "굿")
+
                         if (value == 1){
+
                             val sharedPreferences = getSharedPreferences("data1", MODE_PRIVATE)
                             val tmp_latitude = sharedPreferences.getString("lat", "0.0")?.toDouble()
                             val tmp_longitude = sharedPreferences.getString("lng", "0.0")?.toDouble()
@@ -99,6 +113,7 @@ class location_map : AppCompatActivity() {
                         }
 
                         else if (value == 2){
+
                             val sharedPreferences = getSharedPreferences("data2", MODE_PRIVATE)
                             val tmp_latitude = sharedPreferences.getString("lat", "0.0")?.toDouble()
                             val tmp_longitude = sharedPreferences.getString("lng", "0.0")?.toDouble()
@@ -114,12 +129,10 @@ class location_map : AppCompatActivity() {
                         }
 
                         else{
-                            data_get(37.525387412764935, 126.92783852449817)
+                            //val pos = LatLng.from(37.525387412764935, 126.92783852449817)
+                            //data_get(37.525387412764935, 126.92783852449817)
+                            data_get(la, ln)
                         }
-
-                        //내 위치 테스트용 더현대
-                        showIconLabel(37.525387412764935, 126.92783852449817)
-                        Log.d("결과", "굿")
 
 
                     }
@@ -140,6 +153,16 @@ class location_map : AppCompatActivity() {
 
 
     }
+
+    fun my_location(){
+        val sharedPreferences = getSharedPreferences("location", MODE_PRIVATE)
+
+        la = sharedPreferences.getString("latitude", "0.0")?.toDouble()!!
+        ln = sharedPreferences.getString("longitude", "0.0")?.toDouble()!!
+
+
+    }
+
 
     fun one_data_get(la:Double, lo:Double){
 
@@ -263,6 +286,82 @@ class location_map : AppCompatActivity() {
         }
         // 라벨 생성
         labelLayer!!.addLabel(LabelOptions.from(i.toString(), pos).setStyles(styles))
+        kakaoMap!!.moveCamera(
+            CameraUpdateFactory.newCenterPosition(pos, 16),
+            CameraAnimation.from(duration)
+        )
+    }
+
+
+    private fun showIconLabel3(i:Int, la:Double, ln:Double, type:String) {
+        val pos = LatLng.from(la, ln)
+
+        // 라벨 스타일 생성
+        var styles = kakaoMap!!.labelManager
+            ?.addLabelStyles(
+                LabelStyles.from(
+                    LabelStyle.from(R.drawable.trash3_marker)
+                        .setIconTransition(LabelTransition.from(Transition.None, Transition.None))
+                )
+            )
+
+        if (type == "일반쓰레기"){
+            styles = kakaoMap!!.labelManager
+                ?.addLabelStyles(
+                    LabelStyles.from(
+                        LabelStyle.from(R.drawable.trash3_marker)
+                            .setIconTransition(LabelTransition.from(Transition.None, Transition.None))
+                    )
+                )
+        }
+        if (type == "재활용쓰레기"){
+            styles = kakaoMap!!.labelManager
+                ?.addLabelStyles(
+                    LabelStyles.from(
+                        LabelStyle.from(R.drawable.trash2_marker)
+                            .setIconTransition(LabelTransition.from(Transition.None, Transition.None))
+                    )
+                )
+        }
+        if (type == "재활용센터"){
+            styles = kakaoMap!!.labelManager
+                ?.addLabelStyles(
+                    LabelStyles.from(
+                        LabelStyle.from(R.drawable.trash1_marker)
+                            .setIconTransition(LabelTransition.from(Transition.None, Transition.None))
+                    )
+                )
+        }
+        if (type == "폐형광등"){
+            styles = kakaoMap!!.labelManager
+                ?.addLabelStyles(
+                    LabelStyles.from(
+                        LabelStyle.from(R.drawable.trash4_marker)
+                            .setIconTransition(LabelTransition.from(Transition.None, Transition.None))
+                    )
+                )
+        }
+        if (type == "폐건전지"){
+            styles = kakaoMap!!.labelManager
+                ?.addLabelStyles(
+                    LabelStyles.from(
+                        LabelStyle.from(R.drawable.trash5_marker)
+                            .setIconTransition(LabelTransition.from(Transition.None, Transition.None))
+                    )
+                )
+        }
+        if (type == "폐형광등/폐건전지"){
+            styles = kakaoMap!!.labelManager
+                ?.addLabelStyles(
+                    LabelStyles.from(
+                        LabelStyle.from(R.drawable.trash5_marker)
+                            .setIconTransition(LabelTransition.from(Transition.None, Transition.None))
+                    )
+                )
+        }
+
+        // 라벨 생성
+        labelLayer!!.addLabel(LabelOptions.from(i.toString(), pos).setStyles(styles))
     }
 
     fun data_get(la:Double, lo:Double){
@@ -286,7 +385,7 @@ class location_map : AppCompatActivity() {
                         var tmp_type = response.body()?.trash_data?.get(i)?.get("type")
                         tmp_lan?.let { tmp_lng?.let { it1 ->
                             if (tmp_type != null) {
-                                showIconLabel2(num++, it.toDouble(), it1.toDouble(), tmp_type)
+                                showIconLabel3(num++, it.toDouble(), it1.toDouble(), tmp_type)
                             }
                         } }
                     }
@@ -310,6 +409,14 @@ class location_map : AppCompatActivity() {
         val editor = sharedPreferences.edit()
         editor.remove("value")
         editor.apply()
+    }
+
+    //툴바 뒤로가기
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            finish()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 }

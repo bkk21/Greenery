@@ -15,6 +15,8 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.Looper
 import android.provider.MediaStore
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
 import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
@@ -27,6 +29,7 @@ import android.widget.ProgressBar
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
+import android.window.OnBackInvokedDispatcher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
@@ -68,6 +71,7 @@ import java.util.Date
 
 class MainActivity : AppCompatActivity() {
 
+    var text_con = 0 //다르면 0, 같으면 1, 즉, 사진 인식 못하면 1
     //api 생성
     val api = APIS.create()
 
@@ -153,16 +157,21 @@ class MainActivity : AppCompatActivity() {
             msg.isEnabled = false
             var data_text = msg.text.toString()
 
-            if (isfirst == 1) {
-                chat_first_chat(data_text)
-                msg.setText("")
+            if (data_text != ""){
+                if (isfirst == 1) {
+                    chat_first_chat(data_text)
+                    msg.setText("")
 
-                createView_user(data_text)
+                    createView_user(data_text)
+                }
+                else {
+                    chat_send(data_text)
+                    msg.setText("")
+                    createView_user(data_text)
+                }
             }
-            else {
-                chat_send(data_text)
-                msg.setText("")
-                createView_user(data_text)
+            else{
+                Toast.makeText(this, "채팅을 입력해주세요", Toast.LENGTH_LONG).show()
             }
         }
 
@@ -194,7 +203,8 @@ class MainActivity : AppCompatActivity() {
                     var img = findViewById<ImageView>(R.id.img)
                     img.visibility = View.VISIBLE
                     createView_gpt(response.body()?.msg.toString())
-                    createView_gpt_location("[주변 쓰레기통 정보 바로 보기]")
+                    if (response.body()?.msg != "저는 분리 배출 방법을 안내해주는 챗봇이에요. 분리 배출과 관련된 질문을 해주세요.")
+                        createView_gpt_location_lo("[주변 쓰레기통 정보 바로 보기]")
 
                     msg.isEnabled = true
 
@@ -243,7 +253,9 @@ class MainActivity : AppCompatActivity() {
                     var img = findViewById<ImageView>(R.id.img)
                     img.visibility = View.VISIBLE
                     createView_gpt(response.body()?.msg.toString())
-                    createView_gpt_location("[주변 쓰레기통 정보 바로 보기]")
+
+                    if (response.body()?.msg.toString() != "물체가 인식되지 않았습니다. 사진을 다시 찍어주세요.")
+                        createView_gpt_location_lo("[주변 쓰레기통 정보 바로 보기]")
                     //get_trash(la!!, lo!!)
 
                     msg.isEnabled = true
@@ -265,45 +277,45 @@ class MainActivity : AppCompatActivity() {
     fun chat_send(data_text:String){
         val msg = findViewById<EditText>(R.id.input)
 
-        msg.isEnabled = false
+            //로딩 시작
+            var pb = findViewById<ProgressBar>(R.id.progressBar)
+            pb.visibility = View.VISIBLE
 
-        //로딩 시작
-        var pb = findViewById<ProgressBar>(R.id.progressBar)
-        pb.visibility = View.VISIBLE
+            val data = PM_Chat(data_text, send_history)
 
-        val data = PM_Chat(data_text, send_history)
+            //통신 관련
+            api.chat_send(data).enqueue(object : Callback<PM_Chat_Result> {
 
-        //통신 관련
-        api.chat_send(data).enqueue(object : Callback<PM_Chat_Result> {
+                override fun onResponse(call: Call<PM_Chat_Result>, response: Response<PM_Chat_Result>) {
+                    //Log.d("log",response.toString())
+                    Log.d("log", response.body().toString())
 
-            override fun onResponse(call: Call<PM_Chat_Result>, response: Response<PM_Chat_Result>) {
-                //Log.d("log",response.toString())
-                Log.d("log", response.body().toString())
+                    // 맨 처음 문장 실행
+                    if(!response.body().toString().isEmpty()){
 
-                // 맨 처음 문장 실행
-                if(!response.body().toString().isEmpty()){
+                        send_history = response.body()?.history!!
+                        pb.visibility = View.INVISIBLE
 
-                    send_history = response.body()?.history!!
-                    pb.visibility = View.INVISIBLE
+                        createView_gpt(response.body()?.msg.toString())
+                        if (response.body()?.msg != "저는 분리 배출 방법을 안내해주는 챗봇이에요. 분리 배출과 관련된 질문을 해주세요.")
+                            createView_gpt_location_lo("[주변 쓰레기통 정보 바로 보기]")
+                        //get_trash(la!!, lo!!)
 
-                    createView_gpt(response.body()?.msg.toString())
-                    createView_gpt_location("[주변 쓰레기통 정보 바로 보기]")
-                    //get_trash(la!!, lo!!)
-
-                    msg.setText("")
-                    msg.isEnabled = true
-                    send_history = response.body()?.history!!
+                        msg.setText("")
+                        msg.isEnabled = true
+                        send_history = response.body()?.history!!
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<PM_Chat_Result>, t: Throwable) {
-                // 실패
-                Log.d("log",t.message.toString())
-                Log.d("log","fail")
-            }
+                override fun onFailure(call: Call<PM_Chat_Result>, t: Throwable) {
+                    // 실패
+                    Log.d("log",t.message.toString())
+                    Log.d("log","fail")
+                }
 
 
-        }) //여기까지가 통신 한 묶음
+            }) //여기까지가 통신 한 묶음
+
     }
 
     private fun createView_user(data_text:String) {
@@ -478,6 +490,7 @@ class MainActivity : AppCompatActivity() {
 
         newtextview.setPadding(paddingInPixels, paddingInPixels, paddingInPixels, paddingInPixels)
 
+
         // 글자색 설정
         val color = ContextCompat.getColor(applicationContext, R.color.black)
         newtextview.setTextColor(color)
@@ -501,6 +514,69 @@ class MainActivity : AppCompatActivity() {
             scrollView.fullScroll(ScrollView.FOCUS_DOWN)
         }
     } //createView_gpt_location
+
+    private fun createView_gpt_location_lo(value:String) {
+
+        log = findViewById(R.id.log)
+
+        // 텍스트뷰 생성
+        val newtextview: TextView = TextView(applicationContext)
+
+        // 텍스트뷰 글자 설정 및 밑줄 추가
+        val content = SpannableString(value)
+        content.setSpan(UnderlineSpan(), 0, content.length, 0)
+        newtextview.text = content
+
+        // 텍스트뷰 글자 크기
+        newtextview.textSize = 20f
+
+        // 배경 설정
+        val backgroundDrawable = ContextCompat.getDrawable(applicationContext, R.drawable.gpt_back)
+        newtextview.background = backgroundDrawable
+
+        // id 설정
+        newtextview.id = num
+        num += 1
+
+        // 레이아웃 설정
+        val param: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        val marginVertical = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP, 15f, resources.displayMetrics).toInt()
+        param.topMargin = marginVertical
+        param.bottomMargin = marginVertical
+        param.marginEnd = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30f, resources.displayMetrics).toInt()
+        param.gravity = Gravity.START
+
+        // 패딩 설정
+        val paddingInPixels = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP, 20f, resources.displayMetrics
+        ).toInt()
+        newtextview.setPadding(paddingInPixels, paddingInPixels, paddingInPixels, paddingInPixels)
+
+        // 글자색 설정
+        val color = ContextCompat.getColor(applicationContext, R.color.black)
+        newtextview.setTextColor(color)
+
+        // 적용
+        newtextview.layoutParams = param
+        log.addView(newtextview)
+
+        // 클릭 리스너 추가
+        newtextview.setOnClickListener {
+            get_trash(la!!, lo!!)
+            val bottomSheet = BottomSheetFragment()
+            bottomSheet.show(supportFragmentManager, bottomSheet.tag)
+        }
+
+        val scrollView: ScrollView = findViewById(R.id.sc)
+        scrollView.post {
+            scrollView.fullScroll(ScrollView.FOCUS_DOWN)
+        }
+
+    } //재활용 방법 보기 버튼
 
     override fun onRequestPermissionsResult(requestCode: Int,
                                             permissions: Array<out String>, grantResults: IntArray) {
@@ -586,8 +662,6 @@ class MainActivity : AppCompatActivity() {
         pb.visibility = View.VISIBLE
 
         val data = PM_get_near_trash(la, lo)
-        //test용 더현대
-        //val data = PM_get_near_trash(37.525387412764935, 126.92783852449817)
         Log.d("보내는 데이터", data.toString())
 
         //통신 관련
@@ -773,7 +847,7 @@ class MainActivity : AppCompatActivity() {
                         var pb = findViewById<ProgressBar>(R.id.progressBar)
                         pb.visibility = View.INVISIBLE
                         Log.d("업로드 실패", "${response.code()} ${response.message()}")
-                        Toast.makeText(this@MainActivity, "저장소 권한을 승인해 주세요", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@MainActivity, "서버 연결 문제 1", Toast.LENGTH_LONG).show()
                     }
 
                 }
@@ -784,7 +858,7 @@ class MainActivity : AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     // UI 스레드에서 에러 메시지 표시
                     Log.e("Network Error", "서버 연결 실패: ${e.message}")
-                    Toast.makeText(this@MainActivity, "저장소 권한을 승인해 주세요", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@MainActivity, "서버 연결 문제 2", Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -874,4 +948,9 @@ class MainActivity : AppCompatActivity() {
         return if (uriString != null) Uri.parse(uriString) else null
     }
 
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
+    }
 }

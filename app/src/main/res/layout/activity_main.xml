@@ -86,7 +86,7 @@
                                 android:background="@drawable/gpt_back"
                                 android:gravity="center_vertical"
                                 android:padding="20dp"
-                                android:text="안녕하세요!\n배출 방법을 안내하는 AI: Greenery입니다.\n\n제품명 또는 사진을 보내주세요!"
+                                android:text = "안녕하세요!\n저는 분리 배출 방법을 안내해주는 챗봇 Greenery입니다.\n\n분리 배출 방법에 대해 질문하거나 사진을 찍어서 보내주세요!"
                                 android:textColor="@color/black"
                                 android:textSize="18sp"
                                 android:textStyle="bold" />
