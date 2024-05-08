@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="#f9e54e"> <!-- Ripple Effect 클릭시 색상 -->
+
+    <item
+        android:left="-5dp"
+        android:right="-5dp"
+        android:top="-5dp"
+        android:bottom="5dp"> <!-- 테두리 두께 지정 -->
+        <shape android:shape="rectangle">
+            <stroke android:width="2dp" android:color="#232323"/> <!-- 테두리 색과 두께 -->
+        </shape>
+    </item>
+
+
+
+</ripple>

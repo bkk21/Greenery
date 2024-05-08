@@ -15,7 +15,7 @@
             <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="5"
             android:orientation="vertical"
             android:gravity="center"
             android:layout_gravity="center"
@@ -79,9 +79,10 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:gravity="center_vertical"
-                        android:text="재활용센터 번호"
+                        android:text="분리수거 TIP! : 꽃은 일반쓰레기로 버립니다."
                         android:textSize="15sp"/>
                 </LinearLayout>
+
             </LinearLayout>
     </LinearLayout>
 

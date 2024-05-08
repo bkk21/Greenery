@@ -62,6 +62,9 @@ class location_map : AppCompatActivity() {
 
 
         my_location()
+        //test 위치 코드 더현대
+        //la = 37.525387412764935
+        //ln = 126.92783852449817
 
         val mapView = findViewById<MapView>(R.id.map_view)
         mapView.start(object : MapLifeCycleCallback() {
@@ -211,7 +214,7 @@ class location_map : AppCompatActivity() {
             )
 
         // 라벨 생성
-        labelLayer!!.addLabel(LabelOptions.from("테스트", pos).setStyles(styles))
+        labelLayer!!.addLabel(LabelOptions.from(9999999.toString(), pos).setStyles(styles))
         kakaoMap!!.moveCamera(
             CameraUpdateFactory.newCenterPosition(pos, 16),
             CameraAnimation.from(duration)
@@ -409,6 +412,11 @@ class location_map : AppCompatActivity() {
         val editor = sharedPreferences.edit()
         editor.remove("value")
         editor.apply()
+
+        val sharedPreference1 = getSharedPreferences("one_data", MODE_PRIVATE)
+        val editor1 = sharedPreference1.edit()
+        editor1.clear()
+        editor1.commit()
     }
 
     //툴바 뒤로가기
