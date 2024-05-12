@@ -1,4 +1,4 @@
-# ♻️ Greenery : AI를 이용한 재활용품 분리 배출 안내 앱
+# ♻️ Greenery: AI를 활용한 분리 배출 방법 안내 앱
 - 플레이스토어 다운로드 링크 [[Playstore]](https://play.google.com/store/apps/details?id=com.ert.greenery)
 - 2024년도 서울 열린데이터광장 공공데이터 활용 창업경진대회 출품작
 - recyclable waste detection App with Kotlin
