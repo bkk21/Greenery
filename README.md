@@ -1,8 +1,9 @@
 # ♻️ Greenery : AI를 이용한 재활용품 분리 배출 안내 앱
-- 2024년도 빅데이터 활용 미래 사회문제 해결 아이디어 해커톤 출품작
+- 플레이스토어 다운로드 링크 [[Playstore]](https://play.google.com/store/apps/details?id=com.ert.greenery)
+- 2024년도 서울 열린데이터광장 공공데이터 활용 창업경진대회 출품작
 - recyclable waste detection App with Kotlin
 - yolo v8과 공공 데이터를 활용한 이미지 학습
-[Greenery Recyclable Waste Detection](https://github.com/the0807/Greenery-Recyclable-Waste-Detection)
+[[Greenery Recyclable Waste Detection]](https://github.com/the0807/Greenery-Recyclable-Waste-Detection)
 - ChatGPT Prompt Engineering을 통해 분리 배출 방법에 관한 연관성 높은 답변 도출
 - ChatGPT Fine-Tuning(RAG)를 통해 성능 향상 (진행 중 - 추후 관련 레포지토리 생성 예정)
 <br><br>
