@@ -1,10 +1,11 @@
-# ♻️ Greenery : AI를 이용한 재활용품 분리 배출 안내 앱
-- 2024년도 빅데이터 활용 미래 사회문제 해결 아이디어 해커톤 출품작
+# ♻️ Greenery: AI를 활용한 분리 배출 방법 안내 앱
+- 플레이스토어 다운로드 링크 [[Playstore]](https://play.google.com/store/apps/details?id=com.ert.greenery)
+- 2024년도 서울 열린데이터광장 공공데이터 활용 창업경진대회 출품작
 - recyclable waste detection App with Kotlin
 - yolo v8과 공공 데이터를 활용한 이미지 학습
-[Greenery Recyclable Waste Detection](https://github.com/the0807/Greenery-Recyclable-Waste-Detection)
+[[Greenery Recyclable Waste Detection]](https://github.com/the0807/Greenery-Recyclable-Waste-Detection)
 - ChatGPT Prompt Engineering을 통해 분리 배출 방법에 관한 연관성 높은 답변 도출
-- ChatGPT Fine-Tuning(RAG)를 통해 성능 향상 (진행 중 - 추후 관련 레포지토리 생성 예정)
+- ChatGPT Fine-Tuning(RAG)를 통해 성능 향상 (추후 관련 레포지토리 공개 예정)
 <br><br>
 
 # 🏢 Position
@@ -47,10 +48,10 @@ $data_text 의 배출 방법에 대해 알려줘
 <br><br>
 
 # 🌱 Result
-![app1](https://github.com/bkk21/Greenery/assets/108513540/26191155-f574-4e3b-8bc2-fc6109c69070)|![app2](https://github.com/bkk21/Greenery/assets/108513540/89284dae-61b6-4b0b-baf4-e77a37dc2326)|![app3](https://github.com/bkk21/Greenery/assets/108513540/427ff9b2-640b-41ee-aa99-c7caac3e7935)
-|:---:|:---:|:---:|
-| <center>메인 화면</center> | <center>카메라 인식 화면</center> | <center>카메라 인식 결과 화면</center>|
+|![SC 1](https://github.com/bkk21/Greenery/assets/108513540/6566fb98-cf05-49c6-ae8e-3f06aadb4cb7)|![SC 2](https://github.com/bkk21/Greenery/assets/108513540/03a3eeb6-3c29-43ad-8568-f5ec38b3a3f3)|![SC 2](https://github.com/bkk21/Greenery/assets/108513540/45cc4b79-9bd3-4ba8-ab01-c505109d0a19)|![SC 4](https://github.com/bkk21/Greenery/assets/108513540/200d4252-a56a-4fd0-ad32-67c499a066d8)
+|:---:|:---:|:---:|:---:|
+| <center>메인 화면</center> | <center>채팅 예시</center> | <center>채팅 중 내 주변 쓰레기통 정보</center>| <center>지도에서 보는 주변 쓰레기통 정보</center>|
 
-![app4](https://github.com/bkk21/Greenery/assets/108513540/fcc3321b-889c-4666-b092-4b7ef2adaaa8)|![app5](https://github.com/bkk21/Greenery/assets/108513540/12d35c98-b02e-465e-b1ee-19968b8e653b)
-|:---:|:---:|
-|<center>챗봇 화면1</center>|<center>챗봇 화면2</center>
+|![SC 5](https://github.com/bkk21/Greenery/assets/108513540/daae3504-d22a-45f3-b7ac-4a4a05d1e813)|![SC 6](https://github.com/bkk21/Greenery/assets/108513540/539f05cd-37be-4a4d-bbd1-5b4d1e0d5b82)|![SC 7](https://github.com/bkk21/Greenery/assets/108513540/e98a6d82-b002-45d2-a237-d0e0dd9990e5)|![SC 8](https://github.com/bkk21/Greenery/assets/108513540/2a6d28dd-b111-4bf2-a7c2-3a0d6cde3755)|
+|:---:|:---:|:---:|:---:|
+| <center>사진으로 보는 방법 확인</center> | <center>내 주변 500M 안의 쓰레기통 지도</center> | <center>특정 위치의 상세 정보 확인</center>| <center>분리배출 TIP</center>|
