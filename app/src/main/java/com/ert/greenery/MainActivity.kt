@@ -172,6 +172,7 @@ class MainActivity : AppCompatActivity() {
             }
             else{
                 Toast.makeText(this, "채팅을 입력해주세요", Toast.LENGTH_LONG).show()
+                msg.isEnabled = true
             }
         }
 

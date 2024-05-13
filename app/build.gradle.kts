@@ -11,8 +11,8 @@ android {
         applicationId = "com.ert.greenery"
         minSdk = 24
         targetSdk = 33
-        versionCode = 6
-        versionName = "1.1.0"
+        versionCode = 10
+        versionName = "1.1.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
